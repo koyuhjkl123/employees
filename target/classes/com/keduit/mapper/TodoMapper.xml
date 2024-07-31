@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.keduit.mapper.TodoMapper">
+
+
+	<select id="getTodoList" resultType="com.keduit.domain.TodoVO">
+		select * from t_todo order by dueDate
+	</select>
+	
+	<select id="getTodoDateList" resultType="com.keduit.domain.TodoVO">
+		select * from t_todo ORDER BY priority, dueDate
+	</select>
+
+	<select id="get" resultType="com.keduit.domain.TodoVO">
+		select * from t_todo where tno = #{tno}
+	</select>
+
+	<delete id="remove">
+		delete from t_todo where tno = #{tno}
+	</delete>
+	
+	<insert id="insert">
+		insert into t_todo(tno, title, writer, priority) values(seq_todo.nextval, #{title}, #{writer}, #{priority})
+	</insert>
+
+	<update id="update">
+		update t_todo set title = #{title}, writer = #{writer}, finished =#{finished}, dueDate = #{dueDate} where tno = #{tno}
+	</update>
+
+</mapper>
