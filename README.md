@@ -27,7 +27,125 @@ CRUD를 활용한 자신의 할당되는 업무 리스트를 우선순위를 적
 # 주요 기능 설명
 * 전체 조회
 - 전체 리스트의 업무를 최신 기준으로 볼 수 있으며, 우선순위 높은 순으로 5개 내로 확인 가능
+<br>
 
+<details>
+    <summary>코드 보기(html)</summary>
+
+```html
+
+<body>
+
+	<h1>Todo 리스트</h1>
+	<form action="/todo/get" method="get">
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Tno</th>
+					<th>Title</th>
+					<th>DueDate</th>
+					<th>Writer</th>x
+					<th>Finlshed</th>
+					<th>Priority</th>
+
+				</tr>
+			</thead>
+			<c:forEach items="${List }" var="todo" varStatus="status">
+				<input type="hidden" name="duedate" value="${time[status.index]}">
+
+				<tr>
+					<td>${todo.tno }</td>
+					<!-- 상세 조회에서 페이지 이동을 위한 수정 -->
+					<td><a
+						href="/Tdos/todo/get?tno=${todo.tno}&amp;time=${time[status.index]}">${todo.title }</a></td>
+
+
+					<td>${time[status.index]}</td>
+					<td>${todo.writer }</td>
+
+					<td><c:choose>
+							<c:when test="${finishedList[status.index]}">
+								작업 완료
+							</c:when>
+							<c:otherwise>
+								작업 미완료
+							</c:otherwise>
+						</c:choose></td>
+					<td><c:choose>
+							<c:when test="${todo.priority == 1}">
+									아주 높음
+								</c:when>
+							<c:when test="${todo.priority == 2}">
+									높음
+								</c:when>
+							<c:when test="${todo.priority == 3}">
+									보통
+								</c:when>
+							<c:when test="${todo.priority == 4}">
+									낮음
+								</c:when>
+							<c:when test="${todo.priority == 5}">
+									아주 낮음
+								</c:when>
+							<c:otherwise>
+									정보 없음
+								</c:otherwise>
+						</c:choose></td>
+
+				</tr>
+			</c:forEach>
+
+
+		</table>
+		<div class="priority">
+		<h1>Todo 리스트 중요도</h1>
+			<table border="1">
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>완료 예정 일자</th>
+						<th>작업 여부</th>
+						<th>우선순위</th>
+					</tr>
+				</thead>
+
+
+				<c:set var="count" value="1" />
+				<c:forEach items="${list_priority}" var="todo" varStatus="status">
+					<c:if
+						test="${(todo.priority == 1 or todo.priority == 2) and count <= 5}">
+						<tr>
+							<td>${count}</td>
+							<td><a
+								href="/Tdos/todo/get?tno=${todo.tno}&amp;time=${time[status.index]}">${todo.title}</a></td>
+							<td>${datess[status.index]}</td>
+							<td><c:choose>
+									<c:when test="${finishedList[status.index]}">작업 완료</c:when>
+									<c:otherwise>작업 미완료</c:otherwise>
+								</c:choose></td>
+							<td><c:choose>
+									<c:when test="${todo.priority == 1}">아주 높음</c:when>
+									<c:when test="${todo.priority == 2}">높음</c:when>
+								</c:choose></td>
+						</tr>
+						<c:set var="count" value="${count + 1}" />
+					</c:if>
+				</c:forEach>
+
+
+			</table>
+
+
+		</div>
+
+
+	</form>
+</body>
+
+```
+
+</details>
 
 # 프로젝트 후기
 
